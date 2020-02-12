@@ -12,11 +12,9 @@ class RecipesController < ApplicationController
   end
 
   def create
-    ingredient_ids = params.values.select{ |value| value.to_i != 0 }
-    
     @recipe = Recipe.create({ title: params[:title] })
     
-    ingredient_ids.each do |ingredient_id|
+    params[:ingredient_ids].each do |ingredient_id|
       @recipe_ingredient = RecipeIngredient.create({ recipe: @recipe, ingredient_id: ingredient_id })
     end
 
