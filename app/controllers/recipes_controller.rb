@@ -12,13 +12,13 @@ class RecipesController < ApplicationController
   end
 
   def create
+    ingredient_ids = params.select{ |key, value| value.to_i != 0 }.values
+    
     @recipe = Recipe.create({ title: params[:title] })
-
-    byebug
-
-    @recipe_ingredient = RecipeIngredient.create({ recipe: @recipe, ingredient_id: params[:ingredient_id] })
-
-    byebug
+    
+    ingredient_ids.each do |ingredient_id|
+      @recipe_ingredient = RecipeIngredient.create({ recipe: @recipe, ingredient_id: ingredient_id })
+    end
 
     render json: @recipe, include: [:ingredients]
   end
